@@ -1,0 +1,14 @@
+{
+	"trim_automatic_white_space": false,
+	"translate_tabs_to_spaces": true,
+	"ignored_packages":
+	[
+		"Vintage",
+	],
+	"color_scheme": "Monokai.sublime-color-scheme",
+	/*"font_size": 12,*/
+	"save_on_focus_lost": true,
+	/*"font_size": 30,*/
+	"font_size": 16,
+	"theme": "Default.sublime-theme",
+}

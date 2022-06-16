@@ -1,0 +1,19 @@
+<snippet>
+	<content><![CDATA[
+//Instead of iterating on divisors of each number till 1 to n 0(nrootn)
+//We should iterate on multiples 
+	vector<int> div(n+1);
+    for(int i=1;i<=n;i++){
+    	for(int j=i;j<=n;j+=i){
+    		div[j]++;//i is the factor of j
+    	}
+    }
+    for(int i=1;i<=n;i++)
+    	cout<<i<<" "<<div[i]<<endl;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>optCntDivisor</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

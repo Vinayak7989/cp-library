@@ -1,0 +1,89 @@
+<snippet>
+    <content><![CDATA[
+mt19937_64 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+ll bases[10] = {
+  89, 
+  101, 
+  189,
+  94,
+  621,
+  (ll)rng() % 1000 + 1051,
+  (ll)rng() % 2000 + 2761,
+  (ll)rng() % 4000 + 4441,
+  (ll)rng() % 8000 + 8111,
+  (ll)rng() % 16000 + 18883
+};
+
+ll primes[10] = {
+  533000401,
+  735632791,
+  776531419,
+  797003413,
+  1062599999,
+  1047899999,
+  1031999999, 
+  1027799999,
+  1018199999,
+  1000000007
+};
+
+struct string_hash{
+      string s;
+      ll n, base, mod;
+      vector<ll> ph, invs, pw;
+      void init(string s_, ll b = 89, ll m = M){
+            mod = m;
+            base = b;
+            s = s_;
+            n = s.length();
+            ph = vector<ll>(n+1);
+            pw = vector<ll>(n+1);
+            invs = vector<ll>(n);
+            pw[0] = 1;
+            for(int i=0; i<n; i++){
+                  ph[i+1] = (ph[i] + s[i] * pw[i] % mod) % mod;
+                  pw[i+1] = pw[i] * base % mod;
+            }
+            invs[n-1] = expo(pw[n-1],mod-2);
+            for(int i=n-2; i>=0; i--){
+                  invs[i] = invs[i+1] * base % mod;
+            }
+      }
+      ll get(int l, int r){
+            return (ph[r+1] - ph[l] + mod) % mod * 1ll * invs[l] % mod;
+      }
+      ll expo(ll a, ll b){
+            ll res = 1;
+            while(b){
+                  if(b%2) res = res * a % mod;
+                  a = a * a % mod;
+                  b /=2;
+            }
+            return res;
+      }
+};
+
+struct multi_hash{
+      vector<string_hash> sh;
+      int n, k;
+      void init(string s, int K){
+            k = K; n = (int) s.length();
+            sh.resize(k);
+            for(int i=0; i<k; i++){
+                  sh[i].init(s, bases[9-i], primes[9-i]);
+            }
+      }
+      vector<ll> get(int l, int r){
+            vector<ll> res(k);
+            for(int i=0; i<k; i++){
+                  res[i] = sh[i].get(l,r);
+            }
+            return res;
+      }
+};
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>polynomial_hash</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

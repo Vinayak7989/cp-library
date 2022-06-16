@@ -1,0 +1,52 @@
+<snippet>
+    <content><![CDATA[
+struct BinaryLift{
+      int n, lg;
+      vector<int> depth;
+      vector<vector<int>> adj, up;
+      BinaryLift(int n_) : n(n_), depth(n), adj(n), lg(__lg(n-1)), up(lg+1, vector<int>(n, -1)) {}
+
+      void addEdge(int u, int v){
+            adj[u].push_back(v); 
+            adj[v].push_back(u);
+      } 
+      
+      void init(int r = -1){
+            if(r != -1) dfs(r);
+            else for(int i = 0; i < n; i++) if(up[0][i] == -1) dfs(i);
+      }
+      
+      void dfs(int u, int p = -1){
+            up[0][u] = p;
+            for(int i = 1; i <= lg; i++) if(up[i-1][u] != -1) up[i][u] = up[i-1][up[i-1][u]];
+            for(int c : adj[u]) if(c != p)
+                  depth[c] = depth[u]+1, dfs(c, u);
+      }
+
+      int lca(int u, int v){
+            if(depth[u] < depth[v]) swap(u, v);
+            for(int i = lg; i >= 0; i--)
+                  if(depth[u] - (1 << i) >= depth[v]) u = up[i][u];
+            if(u == v) return u;
+            for(int i = lg; i>=0; i--)
+                  if(up[i][u] != up[i][v])
+                        u = up[i][u], v = up[i][v];
+            return up[0][u];
+      }      
+      
+      int dist(int u, int v){
+            return depth[u] + depth[v] - 2 * depth[lca(u, v)];
+      }
+      
+      int kthAnc(int u, int k){
+            for(int i = 0; i <= lg; i++)
+                  if(u != -1 && k >> i & 1) u = up[i][u];
+            return u;
+      }
+};
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>binarylifting</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,27 @@
+<snippet>
+    <content><![CDATA[
+struct fenwick{
+      vector<int> ft;
+      int n;
+      void clear(int n_){
+            n = n_;
+            ft = vector<int>(n+1);
+      }      
+      void add(int i, int x){
+            while(i <= n) ft[i] += x, i += i&-i;
+      }
+      int sum(int i){
+            int ans = 0;
+            while(i) ans += ft[i], i -= i&-i;
+            return ans;
+      }
+      int rsum(int l, int r){
+            return sum(r) - sum(l-1);
+      }
+}fenw;
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>fenwick</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

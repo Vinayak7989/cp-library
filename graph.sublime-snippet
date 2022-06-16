@@ -1,0 +1,60 @@
+<snippet>
+	<content><![CDATA[
+class Graph{
+ int V;
+ list<int> *l;
+public:
+      Graph(int v){
+            V=v;
+            l = new list<int> [V];
+      }
+      void addEdge(int i,int j,bool undir= true){
+            l[i].push_back(j);
+            if(undir)
+            l[j].push_back(i);
+      }
+      void printAdjList(){
+            for(int i=0;i<V;i++){
+                  cout<<i<<"-->";
+                  for(auto node: l[i])
+                        cout<<node<<',';
+                  cout<<endl;
+            }
+      }
+      //Traversals
+      void bfs(int source){
+            queue<int> q;
+            bool *visited = new bool [V]{0};
+            q.push(source);
+            visited[source]=1;
+            while(!q.empty()){
+                  int f= q.front();
+                  cout<<f<<endl;
+                  q.pop();
+                  for(auto nbr: l[f]){
+                        if(!visited[nbr]){
+                              q.push(nbr);
+                              visited[nbr]= 1;
+                        }
+                  }
+            }
+      }
+      void dfshelper(int node,bool *visited){
+            visited[node]=1;
+            cout<<node<<',';
+            for(auto nbr: l[node]){
+                  if(!visited[nbr])
+                        dfshelper(nbr,visited);
+            }
+      }
+      void dfs(int source){
+            bool *visited= new bool[V]{0};
+            dfshelper(source,visited);
+      }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>graph</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

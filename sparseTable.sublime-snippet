@@ -1,0 +1,38 @@
+<snippet>
+    <content><![CDATA[
+struct SparseTable{
+      int n, lg, zero = 0;
+      vector<int> a;
+      vector<vector<int>> dp;
+      int combine(int a, int b) {
+            return __gcd(a, b);
+      }
+      void build(vector<int>& v) {
+            a = v; n = (int)v.size(); lg = __lg(n) + 1;
+            dp.resize(lg, vector<int>(n));
+            for(int i = 0; i <  n; i++) dp[0][i] = a[i];
+            for(int j = 1; j < lg; j++) 
+                  for(int i = 0; i + (1<<j) <= n; i++) 
+                        dp[j][i] = combine(dp[j-1][i], dp[j-1][i+(1<<(j-1))]);
+      }
+      int query(int l, int r) {
+            int x = __lg(r-l+1);
+            return combine(dp[x][l], dp[x][r-(1<<x)+1]);
+      }
+      int query2(int l, int r) {
+            int ans = zero;
+            for(int i = lg-1; i >= 0;  i--) {
+                  if(l + (1 << i) <= r+1) {
+                        ans = combine(ans, dp[i][l]);
+                        l += (1 << i);
+                  }
+            }
+            return ans;
+      }
+}spt;
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>sparse_table</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

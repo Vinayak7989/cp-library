@@ -1,0 +1,34 @@
+<snippet>
+    <content><![CDATA[
+struct binary_trie {
+      const int B = 30;
+      vector<array<int,2>> t = vector<array<int,2>>(1);
+      void ins(int x){
+            int c = 0;
+            for(int i = B; i >= 0; i--) {
+                  int b = x >> i & 1;
+                  if(!t[c][b]) t[c][b] = t.size(), t.emplace_back();
+                  c = t[c][b];
+            }
+      }
+      int qry(int x, bool mx = 1) {
+            int ans = 0, c = 0;
+            for(int i = B; i >= 0; i--){
+                  int b = x >> i & 1;
+                  if(t[c][b ^ mx]) {
+                        if(mx) ans += 1ll << i;
+                        c = t[c][b ^ mx];
+                  }else {
+                        if(!mx) ans += 1ll << i;
+                        c = t[c][b ^ (!mx)];
+                  }
+            }
+            return ans;
+      }
+};
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>trie</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

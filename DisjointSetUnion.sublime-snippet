@@ -1,0 +1,29 @@
+<snippet>
+    <content><![CDATA[
+struct DSU {
+      int n;
+      vector<int> p, s;
+      DSU(int _n) : n(_n), p(_n), s(_n,1) {
+            iota(p.begin(), p.end(), 0);
+      }
+      int find(int x){
+            return p[x] == x ? x : p[x] = find(p[x]);
+      }
+      bool merge(int x, int y){
+            if((x = find(x)) == (y = find(y))) return 0;
+            if(s[x] < s[y]) swap(x,y);
+            
+            s[x] += s[y];
+            p[y] = x;
+            return 1;
+      }
+      bool same(int a, int b) {
+            return find(a) == find(b);
+      }
+};
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>dsu</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

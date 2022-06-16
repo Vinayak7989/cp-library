@@ -1,0 +1,13 @@
+<snippet>
+	<content><![CDATA[
+int gcd(int a,int b){
+//b should be greater than a, otherwise swap it 0(max(a,b))
+	if(a==0) return b;
+	return gcd(b%a,a);
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>gcd</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

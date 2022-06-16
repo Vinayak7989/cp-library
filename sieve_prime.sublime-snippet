@@ -1,0 +1,21 @@
+<snippet>
+	<content><![CDATA[
+vector<int> pr;
+vector<int> primes(N+1,1);
+void sieve(){
+ primes[1]=0;
+ for(int i = 2; i <= N; i++){
+ 	if(primes[i]==1) pr.push_back(i);
+ 	for(int j = i*i; j <= N; j += i)
+ 	primes[j] = 0;
+ }
+ // print pr vector
+ for(int i:pr) cout<<i<<" ";
+ // cout<<pr.size();
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>sieve_prime</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

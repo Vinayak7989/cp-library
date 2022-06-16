@@ -1,0 +1,108 @@
+<snippet>
+    <content><![CDATA[
+const int32_t maxn = N;
+template <typename Node, typename Update>
+struct segtree {
+      bool built = false, lazy[4 * maxn];
+      Node t[4 * maxn], zero = Node();
+      Update upds[4 * maxn], noop = Update();
+      int32_t tl[4 * maxn], tr[4 * maxn];
+      inline void push(int32_t v) {
+            if(!lazy[v]) return;
+            apply(2*v, upds[v]);
+            apply(2*v + 1, upds[v]);
+            lazy[v] = 0;
+            upds[v] = noop;
+      }
+      inline void apply(int32_t v, Update& upd) {
+            upd.apply(t[v], tl[v], tr[v]);
+            if(tl[v] != tr[v]) {
+                  lazy[v] = 1;
+                  upds[v].combine(upd, tl[v], tr[v]);
+            }
+      }
+      template <typename T> 
+      void build(T& a, int32_t v, int32_t l, int32_t r) {
+            tl[v] = l;
+            tr[v] = r;
+            if(l == r){
+                  t[v] = a[l];
+                  return;
+            }
+            int32_t m = (l + r) / 2;
+            build(a, 2*v, l, m);
+            build(a, 2*v + 1, m+1, r);
+            t[v].merge(t[2*v], t[2*v + 1]);
+      }
+      Node query(int32_t v, int l, int r) {
+            if(tr[v] < l || tl[v] > r) return zero;
+            if(l <= tl[v] && tr[v] <= r) return t[v];
+            push(v);
+            Node a = query(2*v, l, r), b = query(2*v + 1, l, r), ans;
+            ans.merge(a, b);
+            return ans;
+      }
+      void rupd(int32_t v, int l, int r, Update& upd){
+            if(tr[v] < l || tl[v] > r) return;
+            if(l <= tl[v] && tr[v] <= r) {
+                  apply(v, upd);
+                  return;
+            }
+            push(v);
+            rupd(2*v, l, r, upd);
+            rupd(2*v + 1, l, r, upd);
+            t[v].merge(t[2*v], t[2*v + 1]);
+      }
+      
+      int len = maxn;
+      void clear() {
+            fill(t, t + 4*len, zero);
+            fill(upds, upds + 4*len, noop);
+            fill(lazy, lazy + 4*len, false);
+            built = false;
+      }
+      template <typename T>
+      void build(T& a) {
+            build(a, 1, 0, len-1);
+            built = true;
+      }
+      Node query(int l, int r) { 
+            if(!built) build(t);
+            return query(1, l, r); 
+      }
+      void rupd(int l, int r, Update upd) { 
+            if(!built) build(t); 
+            rupd(1, l, r, upd); 
+      }
+};
+ 
+struct node{
+      $1
+      node() {}
+      node(int val){
+            $2
+      }
+      void merge(node& l, node& r) {
+            $3
+      }
+};
+struct update{
+      $4
+      update() {}
+      update(int val){
+            $5
+      }
+      void combine(update& o, int tl, int tr){
+            $6
+      }
+      void apply(node& x, int tl, int tr){
+            $7
+      }
+};
+segtree<node, update> st;
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>generic_segtree</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,27 @@
+<snippet>
+    <content><![CDATA[
+template<typename T>
+struct MinQueue{
+      int l = 0, r = 0;
+      deque<pair<T,int>> dq;
+      void push(T x){
+            while(!dq.empty() && x <= dq.back().first) 
+                  dq.pop_back();
+            dq.emplace_back(x, r++);
+      }
+      void pop(){
+            assert(l < r);
+            if(dq.front().second == l++)
+                  dq.pop();
+      }
+      T min(){
+            assert(!dq.empty());
+            return dq.front().first;
+      }
+};
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>minqueue</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>
